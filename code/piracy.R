@@ -13,6 +13,12 @@ library(pROC)
 library(VIM)
 library(dvmisc)
 library(rcompanion)
+library(readstata13)
+
+data2 = read.dta13('../Forecasting-piracy-data/data/data2.dta')
+glimpse(data2)
+
+
 
 data_piracy<-data2
 View(data_piracy)
