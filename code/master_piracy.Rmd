@@ -1,0 +1,69 @@
+---
+title: "master_piracy"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load libraries}
+library(tidyverse)
+library(ggplot2)
+library(readstata13)
+library(corrplot)
+```
+
+```{r read the dataset}
+piracy.data = read.dta13('../new piracy paper/datos determinantes pirateria/data2.dta')
+```
+
+```{r}
+piracy.data %>% View()
+```
+
+```{r}
+glimpse(piracy.data)
+```
+
+```{r number of countries, and identifier}
+countrylist = unique(piracy.data$country)
+length(countrylist)
+```
+
+
+```{r number of years}
+yearlist = unique(piracy.data$time)
+length(yearlist)
+```
+
+
+
+```{r proportion of missing values in the sample}
+anyNA(piracy.data)
+table(is.na(piracy.data))
+prop.table(table(is.na(piracy.data))) * 100
+```
+
+```{r}
+hist(piracy.data$piracy, freq = TRUE, col = 'green', main = 'Histogram', xlab = 'Piracy rate (%)')
+```
+
+```{r}
+boxplot(piracy.data$piracy, main = 'Piracy rates')
+```
+
+```{r compute average piracy rates over time}
+options(digits = 3)
+aggregate(piracy.data$piracy ~piracy.data$time, data = piracy.data, mean)
+aggregate(piracy.data$piracy ~ piracy.data$country, data = piracy.data, mean)
+
+```
+
+```{r correlation matrix}
+
+numericData = na.omit(piracy.data[, 6:14])
+r <- cor(numericData)
+corrplot(r, method = 'circle', type = 'upper')
+```
+
